@@ -15,7 +15,7 @@ public class FontCreate : EditorWindow
     private float width, height;
 
     private string savePath;
-    [MenuItem("Window/Font Creator")]
+    [MenuItem("Tools/Font Creator")]
     static void Init()
     {
         FontCreate window = (FontCreate)EditorWindow.GetWindow(typeof(FontCreate));
@@ -98,7 +98,7 @@ public class FontCreate : EditorWindow
             EditorUtility.SetDirty(mat);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            EditorUtility.DisplayDialog("Font Create Ok!!!", "font save as the:" + savePath, "ok");
+            EditorUtility.DisplayDialog("Font Created Successfully!!!", "save as the:" + savePath, "Ok");
 
         }
     }
@@ -106,7 +106,7 @@ public class FontCreate : EditorWindow
     private CharacterInfo[] SetCharacterInfo()
     {
         string content = fontTextAsset.text;
-        
+     
         CharacterInfo[] info = new CharacterInfo[content.Length];
         for (int i = 0; i < content.Length; i++)
         {
@@ -120,20 +120,19 @@ public class FontCreate : EditorWindow
             info[i].index = index;
             float x = (i % column) * (1f / column);
             float y = 1f - (i / column + 1) * (1f / row);
+           // info[i].uv = new Rect(x, y, 1f / column, 1f / row);
 
-            #region MyRegion
-            //info[i].uvBottomLeft = new Vector2(x, 1 - y);
-            //info[i].uvBottomRight = new Vector2(y, -1f / row);
-            //Debug.Log(string.Format("x:{0}_y:{1}_row:{2}_column:{3}", x, y, 1f / row, 1f / column));
+            info[i].uvBottomLeft = new Vector2(x, y);
+            info[i].uvBottomRight = new Vector2(x + 1f / column, y);
+            info[i].uvTopLeft = new Vector2(x, y+ 1f / row);
+            info[i].uvTopRight = new Vector2(1f / column + x, y + 1f / row);
 
-            //info[i].minX = 0;   //vert X
-            //info[i].maxX = (int)width;  //vert W
-            //info[i].minY = (int)-height;  //vert H   Vert Y must be negative.
-            //info[i].maxY = 0;      //vert Y   
-            #endregion
-
-            info[i].uv = new Rect(x, y, 1f / column, 1f / row);
-            info[i].vert = new Rect(0, 0, width, -height);
+            //info[i].vert = new Rect(0, 0, width, -height);
+            info[i].minX = 0;
+            info[i].minY = (int)-height;
+            info[i].maxX = (int)width;
+            info[i].maxY = 0;
+ 
             info[i].advance = (int)width;
         }
         return info;
