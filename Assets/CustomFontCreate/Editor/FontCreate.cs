@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 using System.Text;
-using System.IO;
 using System;
 public class FontCreate : EditorWindow
 {
@@ -18,19 +15,24 @@ public class FontCreate : EditorWindow
     [MenuItem("Tools/Font Creator")]
     static void Init()
     {
-        FontCreate window = (FontCreate)EditorWindow.GetWindow(typeof(FontCreate));
+        FontCreate window = GetWindow<FontCreate>("FontCreate");
         window.Show();
-        window.position = new Rect(100, 80, 500, 400);
-        window.titleContent = new GUIContent("Font Creator");
+        window.position = new Rect(100, 80, 450, 400);
+        window.titleContent = new GUIContent("Font Creator", EditorGUIUtility.FindTexture("Font Icon"));
     }
     void OnGUI()
     {
         EditorGUILayout.BeginVertical();
+        GUILayout.FlexibleSpace();
+
         GUIStyle gUIStyle = new GUIStyle();
         gUIStyle.fontSize = 24;
         gUIStyle.fontStyle = FontStyle.Bold;
         gUIStyle.alignment = TextAnchor.MiddleCenter;
-        EditorGUILayout.LabelField("Font Creator", gUIStyle);
+        gUIStyle.normal.textColor = Color.cyan;
+        //EditorGUILayout.LabelField("Font Creator", gUIStyle);
+        GUILayout.Label("Font Creator", gUIStyle);
+
 
         GUILayout.Space(10);
         fontName = EditorGUILayout.TextField("Font Name", fontName);
@@ -41,18 +43,33 @@ public class FontCreate : EditorWindow
         GUILayout.Space(20);
         fontTexture = (Texture)EditorGUILayout.ObjectField("Font Texture", fontTexture, typeof(Texture), false);
 
+        #region The ranks of the picture font
         EditorGUILayout.LabelField("The ranks of the picture font", EditorStyles.boldLabel);
         EditorGUILayout.BeginHorizontal();
-        row = EditorGUILayout.IntField("row", row);
-        column = EditorGUILayout.IntField("column", column);
-        EditorGUILayout.EndHorizontal();
+        //row = EditorGUILayout.IntField("row", row);
+        //column = EditorGUILayout.IntField("column", column);
+        GUILayout.Label("row", GUILayout.Width(80f));
+        row = EditorGUILayout.IntField(row,GUILayout.Width(120f));
+        GUILayout.Space(10);
+        GUILayout.Label("column", GUILayout.Width(80f));
+        column = EditorGUILayout.IntField(column, GUILayout.Width(120f));
+        EditorGUILayout.EndHorizontal(); 
+        #endregion
+
         GUILayout.Space(5);
 
+        #region The width and height of a single font
         EditorGUILayout.LabelField("The width and height of a single font", EditorStyles.boldLabel);
         EditorGUILayout.BeginHorizontal();
-        width = EditorGUILayout.FloatField("width", width);
-        height = EditorGUILayout.FloatField("height", height);
-        EditorGUILayout.EndHorizontal();
+        //width = EditorGUILayout.FloatField("width", width);  //间隔太大
+        //EditorGUILayout.PrefixLabel();  //  shit
+        GUILayout.Label("width", GUILayout.Width(80f));
+        width = EditorGUILayout.FloatField(width, GUILayout.Width(120f));
+        GUILayout.Space(10);
+        GUILayout.Label("height", GUILayout.Width(80f));
+        height = EditorGUILayout.FloatField(height, GUILayout.Width(120f));
+        EditorGUILayout.EndHorizontal(); 
+        #endregion
 
         GUILayout.Space(10);
         GUILayout.Label("Save Path", EditorStyles.boldLabel);
@@ -60,7 +77,7 @@ public class FontCreate : EditorWindow
         EditorGUILayout.TextField(savePath, GUILayout.ExpandWidth(false));
         if (GUILayout.Button("Browse", GUILayout.ExpandWidth(false)))
         {
-            savePath = EditorUtility.SaveFolderPanel("savePath", savePath, Application.dataPath);   
+            savePath = EditorUtility.SaveFolderPanel("savePath", savePath, Application.dataPath);
             savePath = savePath.Remove(0, Application.dataPath.Length - "Assets".Length);
         }
         EditorGUILayout.EndHorizontal();
@@ -68,13 +85,15 @@ public class FontCreate : EditorWindow
 
         if (GUILayout.Button("Generate Font"))
         {
-            if (fontName == "") { Debug.LogError("font name is null");return; }
-            if (fontTextAsset == null) { Debug.LogError("fontTextAsset is null");return; }
-            if (fontTexture == null) { Debug.LogError("fontTexture is null");return; }
+            if (fontName == "") { Debug.LogError("font name is null"); return; }
+            if (fontTextAsset == null) { Debug.LogError("fontTextAsset is null"); return; }
+            if (fontTexture == null) { Debug.LogError("fontTexture is null"); return; }
             if (savePath == null) savePath = "Assets";
             GenerateFont();
         }
     }
+
+
     private void GenerateFont()
     {
         if (myFont == null)
@@ -106,7 +125,7 @@ public class FontCreate : EditorWindow
     private CharacterInfo[] SetCharacterInfo()
     {
         string content = fontTextAsset.text;
-     
+
         CharacterInfo[] info = new CharacterInfo[content.Length];
         for (int i = 0; i < content.Length; i++)
         {
@@ -120,19 +139,24 @@ public class FontCreate : EditorWindow
             info[i].index = index;
             float x = (i % column) * (1f / column);
             float y = 1f - (i / column + 1) * (1f / row);
-           // info[i].uv = new Rect(x, y, 1f / column, 1f / row);
 
+            #region Old
+            // info[i].uv = new Rect(x, y, 1f / column, 1f / row);
+            //info[i].vert = new Rect(0, 0, width, -height);
+            #endregion
+
+            #region New
             info[i].uvBottomLeft = new Vector2(x, y);
             info[i].uvBottomRight = new Vector2(x + 1f / column, y);
-            info[i].uvTopLeft = new Vector2(x, y+ 1f / row);
+            info[i].uvTopLeft = new Vector2(x, y + 1f / row);
             info[i].uvTopRight = new Vector2(1f / column + x, y + 1f / row);
 
-            //info[i].vert = new Rect(0, 0, width, -height);
             info[i].minX = 0;
             info[i].minY = (int)-height;
             info[i].maxX = (int)width;
             info[i].maxY = 0;
- 
+
+            #endregion
             info[i].advance = (int)width;
         }
         return info;
