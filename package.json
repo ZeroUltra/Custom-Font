@@ -1,0 +1,22 @@
+{
+  "name": "com.zeroultra.custom-font",
+  "displayName": "Custom-Font",
+  "description": "Custom font In Unity",
+  "version": "1.0.0",
+  "unity": "2017.1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZeroUltra/Custom-Font.git"
+  },
+  "author": {
+    "name": "zeroultra",
+    "email": "zerorogerultra@gmail.com",
+    "url": "https://github.com/ZeroUltra"
+  },
+  "dependencies": {},
+  "keywords": [
+    "Font",
+	"Custom"
+  ]
+}
