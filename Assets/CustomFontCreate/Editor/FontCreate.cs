@@ -2,6 +2,8 @@
 using UnityEditor;
 using System.Text;
 using System;
+using System.Reflection;
+
 public class FontCreate : EditorWindow
 {
     private string fontName = "";
@@ -12,13 +14,27 @@ public class FontCreate : EditorWindow
     private float width, height;
 
     private string savePath;
+
+    private static MethodInfo loadIconMethodInfo, findTextureMethodInfo;
+
     [MenuItem("Tools/Font Creator")]
     static void Init()
     {
+        loadIconMethodInfo = typeof(EditorGUIUtility).GetMethod("LoadIcon", BindingFlags.Static | BindingFlags.NonPublic);
+        findTextureMethodInfo = typeof(EditorGUIUtility).GetMethod("FindTexture", BindingFlags.Static | BindingFlags.Public);
+
         FontCreate window = GetWindow<FontCreate>("FontCreate");
-        window.Show();
         window.position = new Rect(100, 80, 450, 400);
-        window.titleContent = new GUIContent("Font Creator", EditorGUIUtility.FindTexture("Font Icon"));
+
+        Texture2D tex = EditorGUIUtility.FindTexture("GameObject Icon");
+        if (tex == null) Debug.Log("null!!!");
+
+        //window.titleContent = new GUIContent("Font Creator", EditorGUIUtility.FindTexture("GameObject Icon"));
+        //window.titleContent = EditorGUIUtility.TrTextContentWithIcon("Font Creator", EditorGUIUtility.whiteTexture);
+        //    window.titleContent = EditorGUIUtility.TrTextContentWithIcon("Font Creator", EditorGUIUtility.whiteTexture);
+        window.titleContent = EditorGUIUtility.TrTextContentWithIcon("Font Creator", loadIconMethodInfo.Invoke(null, new object[] { "Font Icon" }) as Texture);
+        // window.titleContent = new GUIContent(EditorGUIUtility.ObjectContent(null, typeof(Font)).image, nameof(Font));
+        window.Show();
     }
     void OnGUI()
     {
@@ -49,11 +65,11 @@ public class FontCreate : EditorWindow
         //row = EditorGUILayout.IntField("row", row);
         //column = EditorGUILayout.IntField("column", column);
         GUILayout.Label("row", GUILayout.Width(80f));
-        row = EditorGUILayout.IntField(row,GUILayout.Width(120f));
+        row = EditorGUILayout.IntField(row, GUILayout.Width(120f));
         GUILayout.Space(10);
         GUILayout.Label("column", GUILayout.Width(80f));
         column = EditorGUILayout.IntField(column, GUILayout.Width(120f));
-        EditorGUILayout.EndHorizontal(); 
+        EditorGUILayout.EndHorizontal();
         #endregion
 
         GUILayout.Space(5);
@@ -68,7 +84,7 @@ public class FontCreate : EditorWindow
         GUILayout.Space(10);
         GUILayout.Label("height", GUILayout.Width(80f));
         height = EditorGUILayout.FloatField(height, GUILayout.Width(120f));
-        EditorGUILayout.EndHorizontal(); 
+        EditorGUILayout.EndHorizontal();
         #endregion
 
         GUILayout.Space(10);
