@@ -1,9 +1,13 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+using UnityEngine;
 using UnityEditor;
 using System.Text;
 using System;
 using System.Reflection;
 
+/// <summary>
+/// UNITY 2019 or new
+/// </summary>
 public class FontCreate : EditorWindow
 {
     private string fontName = "";
@@ -20,26 +24,22 @@ public class FontCreate : EditorWindow
     [MenuItem("Tools/Font Creator")]
     static void Init()
     {
-        loadIconMethodInfo = typeof(EditorGUIUtility).GetMethod("LoadIcon", BindingFlags.Static | BindingFlags.NonPublic);
-        findTextureMethodInfo = typeof(EditorGUIUtility).GetMethod("FindTexture", BindingFlags.Static | BindingFlags.Public);
-
         FontCreate window = GetWindow<FontCreate>("FontCreate");
-        window.position = new Rect(100, 80, 450, 400);
+        window.position = new Rect(300, 300, 450, 400);
 
-        Texture2D tex = EditorGUIUtility.FindTexture("GameObject Icon");
-        if (tex == null) Debug.Log("null!!!");
+        //UNITY 2019 or new
+        window.titleContent = new GUIContent("Font Creator", EditorGUIUtility.IconContent("Font Icon").image);
 
-        //window.titleContent = new GUIContent("Font Creator", EditorGUIUtility.FindTexture("GameObject Icon"));
-        //window.titleContent = EditorGUIUtility.TrTextContentWithIcon("Font Creator", EditorGUIUtility.whiteTexture);
-        //    window.titleContent = EditorGUIUtility.TrTextContentWithIcon("Font Creator", EditorGUIUtility.whiteTexture);
-        window.titleContent = EditorGUIUtility.TrTextContentWithIcon("Font Creator", loadIconMethodInfo.Invoke(null, new object[] { "Font Icon" }) as Texture);
-        // window.titleContent = new GUIContent(EditorGUIUtility.ObjectContent(null, typeof(Font)).image, nameof(Font));
+        //UNITY 2018 ....
+        //loadIconMethodInfo = typeof(EditorGUIUtility).GetMethod("LoadIcon", BindingFlags.Static | BindingFlags.NonPublic);
+        //findTextureMethodInfo = typeof(EditorGUIUtility).GetMethod("FindTexture", BindingFlags.Static | BindingFlags.Public);
+        //window.titleContent = EditorGUIUtility.TrTextContentWithIcon("Font Creator", loadIconMethodInfo.Invoke(null, new object[] { "Font Icon" }) as Texture);
+
         window.Show();
     }
     void OnGUI()
     {
-        EditorGUILayout.BeginVertical();
-        GUILayout.FlexibleSpace();
+     
 
         GUIStyle gUIStyle = new GUIStyle();
         gUIStyle.fontSize = 24;
@@ -61,44 +61,45 @@ public class FontCreate : EditorWindow
 
         #region The ranks of the picture font
         EditorGUILayout.LabelField("The ranks of the picture font", EditorStyles.boldLabel);
-        EditorGUILayout.BeginHorizontal();
-        //row = EditorGUILayout.IntField("row", row);
-        //column = EditorGUILayout.IntField("column", column);
-        GUILayout.Label("row", GUILayout.Width(80f));
-        row = EditorGUILayout.IntField(row, GUILayout.Width(120f));
-        GUILayout.Space(10);
-        GUILayout.Label("column", GUILayout.Width(80f));
-        column = EditorGUILayout.IntField(column, GUILayout.Width(120f));
-        EditorGUILayout.EndHorizontal();
+        using (var h = new EditorGUILayout.HorizontalScope())
+        {
+            //row = EditorGUILayout.IntField("row", row);
+            //column = EditorGUILayout.IntField("column", column);
+            GUILayout.Label("row", GUILayout.Width(80f));
+            row = EditorGUILayout.IntField(row, GUILayout.Width(120f));
+            GUILayout.Space(10);
+            GUILayout.Label("column", GUILayout.Width(80f));
+            column = EditorGUILayout.IntField(column, GUILayout.Width(120f));
+        }
         #endregion
 
         GUILayout.Space(5);
 
         #region The width and height of a single font
         EditorGUILayout.LabelField("The width and height of a single font", EditorStyles.boldLabel);
-        EditorGUILayout.BeginHorizontal();
-        //width = EditorGUILayout.FloatField("width", width);  //间隔太大
-        //EditorGUILayout.PrefixLabel();  //  shit
-        GUILayout.Label("width", GUILayout.Width(80f));
-        width = EditorGUILayout.FloatField(width, GUILayout.Width(120f));
-        GUILayout.Space(10);
-        GUILayout.Label("height", GUILayout.Width(80f));
-        height = EditorGUILayout.FloatField(height, GUILayout.Width(120f));
-        EditorGUILayout.EndHorizontal();
+        using (var h = new EditorGUILayout.HorizontalScope())
+        {
+            //width = EditorGUILayout.FloatField("width", width);  //间隔太大
+            //EditorGUILayout.PrefixLabel();  //  shit
+            GUILayout.Label("width", GUILayout.Width(80f));
+            width = EditorGUILayout.FloatField(width, GUILayout.Width(120f));
+            GUILayout.Space(10);
+            GUILayout.Label("height", GUILayout.Width(80f));
+            height = EditorGUILayout.FloatField(height, GUILayout.Width(120f));
+        }
         #endregion
 
         GUILayout.Space(10);
         GUILayout.Label("Save Path", EditorStyles.boldLabel);
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.TextField(savePath, GUILayout.ExpandWidth(false));
-        if (GUILayout.Button("Browse", GUILayout.ExpandWidth(false)))
+        using (var h = new EditorGUILayout.HorizontalScope())
         {
-            savePath = EditorUtility.SaveFolderPanel("savePath", savePath, Application.dataPath);
-            savePath = savePath.Remove(0, Application.dataPath.Length - "Assets".Length);
+            EditorGUILayout.TextField(savePath, GUILayout.ExpandWidth(false));
+            if (GUILayout.Button("Browse", GUILayout.ExpandWidth(false)))
+            {
+                savePath = EditorUtility.SaveFolderPanel("savePath", savePath, Application.dataPath);
+                savePath = savePath.Remove(0, Application.dataPath.Length - "Assets".Length);
+            }
         }
-        EditorGUILayout.EndHorizontal();
-
-
         if (GUILayout.Button("Generate Font"))
         {
             if (fontName == "") { Debug.LogError("font name is null"); return; }
@@ -107,6 +108,7 @@ public class FontCreate : EditorWindow
             if (savePath == null) savePath = "Assets";
             GenerateFont();
         }
+        
     }
 
 
@@ -179,3 +181,4 @@ public class FontCreate : EditorWindow
     }
 
 }
+#endif
