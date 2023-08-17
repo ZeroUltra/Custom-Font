@@ -83,9 +83,9 @@ string content = "你好";
 
 
 
-![](/Img/2018052616135844.png)
+![](Img/2018052616135844.png)
 
-![](/Img/customfont.gif)
+![](Img/customfont.gif)
 
 相关链接:[Unity自定义字体](https://blog.csdn.net/K20132014/article/details/80462509)
 
