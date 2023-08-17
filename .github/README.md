@@ -6,7 +6,7 @@ Unity 自定义艺术字 CustomFont
 
   unity其实一直就有一个custom font功能,网上也能找到很多博客.
 
-![img](https://img-blog.csdnimg.cn/20200528204821865.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0syMDEzMjAxNA==,size_16,color_FFFFFF,t_70)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+![img](https://img-blog.csdnimg.cn/20200528204821865.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0syMDEzMjAxNA==,size_16,color_FFFFFF,t_70)
 
 然后我们只要设置相关信息
 
@@ -20,7 +20,7 @@ Unity 自定义艺术字 CustomFont
 
 **Advance**:从此字符的原点到下一个字符的原点的所需水平距离,差不多也就是宽了
 
-![img](https://img-blog.csdnimg.cn/20200528204940136.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0syMDEzMjAxNA==,size_16,color_FFFFFF,t_70)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)编辑
+![img](https://img-blog.csdnimg.cn/20200528204940136.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0syMDEzMjAxNA==,size_16,color_FFFFFF,t_70)
 
 主要 就是每个字的Index
 
