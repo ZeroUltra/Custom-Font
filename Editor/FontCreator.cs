@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using System.Text;
@@ -8,7 +8,7 @@ using System.Reflection;
 /// <summary>
 /// UNITY 2019 or new
 /// </summary>
-public class FontCreate : EditorWindow
+public class FontCreator : EditorWindow
 {
     private string fontName = "";
     private TextAsset fontTextAsset;
@@ -21,11 +21,13 @@ public class FontCreate : EditorWindow
 
     private static MethodInfo loadIconMethodInfo, findTextureMethodInfo;
 
+    private GUIStyle guiStyle;
+
     [MenuItem("Tools/Font Creator")]
     static void Init()
     {
-        FontCreate window = GetWindow<FontCreate>("FontCreate");
-        window.position = new Rect(300, 300, 450, 400);
+        FontCreator window = GetWindow<FontCreator>("FontCreator");
+        window.position = new Rect(500, 600, 600, 400);
 
         //UNITY 2019 or new
         window.titleContent = new GUIContent("Font Creator", EditorGUIUtility.IconContent("Font Icon").image);
@@ -37,17 +39,18 @@ public class FontCreate : EditorWindow
 
         window.Show();
     }
+    private void OnEnable()
+    {
+        guiStyle = new GUIStyle();
+        guiStyle.fontSize = 24;
+        guiStyle.fontStyle = FontStyle.Bold;
+        guiStyle.alignment = TextAnchor.MiddleCenter;
+        guiStyle.normal.textColor = Color.cyan;
+    }
     void OnGUI()
     {
-     
-
-        GUIStyle gUIStyle = new GUIStyle();
-        gUIStyle.fontSize = 24;
-        gUIStyle.fontStyle = FontStyle.Bold;
-        gUIStyle.alignment = TextAnchor.MiddleCenter;
-        gUIStyle.normal.textColor = Color.cyan;
         //EditorGUILayout.LabelField("Font Creator", gUIStyle);
-        GUILayout.Label("Font Creator", gUIStyle);
+        GUILayout.Label("Font Creator", guiStyle);
 
 
         GUILayout.Space(10);
@@ -108,7 +111,7 @@ public class FontCreate : EditorWindow
             if (savePath == null) savePath = "Assets";
             GenerateFont();
         }
-        
+
     }
 
 
@@ -135,7 +138,7 @@ public class FontCreate : EditorWindow
             EditorUtility.SetDirty(mat);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            EditorUtility.DisplayDialog("Font Created Successfully!!!", "save as the:" + savePath, "Ok");
+            EditorUtility.DisplayDialog("Font Created Successfully!!!", "Save as the:" + savePath + "/" + fontName, "Ok");
 
         }
     }

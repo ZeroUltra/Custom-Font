@@ -1,22 +1,20 @@
 {
-  "name": "com.zeroultra.custom-font",
-  "displayName": "Custom-Font",
-  "description": "Custom font In Unity",
+  "name": "com.zeroultra.customfont",
   "version": "1.0.0",
+  "displayName": "CustomFont",
+  "description": "CustomFont",
+  "documentationUrl": "https://github.com/ZeroUltra/Custom-Font",
+  "changelogUrl": "https://github.com/ZeroUltra/Custom-Font",
+  "licensesUrl": "https://github.com/ZeroUltra/Custom-Font",
+   "keywords": [
+    "font"
+  ],
   "unity": "2017.1",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ZeroUltra/Custom-Font.git"
-  },
-  "author": {
-    "name": "zeroultra",
-    "email": "zerorogerultra@gmail.com",
-    "url": "https://github.com/ZeroUltra"
-  },
-  "dependencies": {},
-  "keywords": [
-    "Font",
-	"Custom"
+  "samples": [
+    {
+      "displayName": "Test",
+      "description": "Test",
+      "path": "Samples~/Test"
+    }
   ]
 }
