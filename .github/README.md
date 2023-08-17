@@ -12,13 +12,13 @@ Unity 自定义艺术字 CustomFont
 
 有多少个文字,就设置相应size大小
 
-**Index:就是字符十进制索引**
+* Index:就是字符十进制索引
 
-**UV:文字在图片中的UV信息**
+* UV:文字在图片中的UV信息
 
-**Vert:**垂直大小取决于字符的像素大小，例如 您的字符均为128x128，在Vert Width和Height中分别输入128和–128将得到适当比例的字母。 垂直Y必须为负。
+* Vert:垂直大小取决于字符的像素大小，例如 您的字符均为128x128，在Vert Width和Height中分别输入128和–128将得到适当比例的字母。 垂直Y必须为负。
 
-**Advance**:从此字符的原点到下一个字符的原点的所需水平距离,差不多也就是宽了
+* Advance:从此字符的原点到下一个字符的原点的所需水平距离,差不多也就是宽了
 
 ![img](https://img-blog.csdnimg.cn/20200528204940136.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0syMDEzMjAxNA==,size_16,color_FFFFFF,t_70)
 
